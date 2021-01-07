@@ -19,7 +19,10 @@ def index():
     session_token = request.cookies.get("session_token")
     user = db.query(User).filter_by(session_token=session_token).first()
 
-    return render_template("index.html")
+    if user:
+        return redirect(url_for("profile"))
+    else:
+        return render_template("index.html")
 
 
 @app.route("/register")
