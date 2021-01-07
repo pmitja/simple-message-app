@@ -3,7 +3,7 @@ from sqla_wrapper import SQLAlchemy
 from sqlalchemy import ForeignKey
 
 
-db = SQLAlchemy(os.getenv("DB_URL", "sqlite:///message-app.db"))
+db = SQLAlchemy(os.getenv("DB_URL", "sqlite:///message-app.sqlite"))
 
 
 class User(db.Model):
