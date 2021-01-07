@@ -1,4 +1,4 @@
-#Simple message web application
+# Simple message web application
 
 
 Welcome to a simple message app. We have a basic way to login and register, then an easy profile page with all your information and message page 
