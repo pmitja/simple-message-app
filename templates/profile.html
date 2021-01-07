@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+
+{% block title %}Profile - {{ user.name }}{% endblock title %}
+
+{% block content %}
+<div class="container">
+    <h1>Hello, {{ user.name }} ! </h1>
+    <h3><small class="text-muted"> {{ user.location }}, {{ weather }}, {{ temperature }} &#176 C </small></h3>
+    <div class="card" style="width: 18rem;">
+        <div class="card-body">
+            <h5 class="card-title">{{ user.name }}</h5>
+            <h6 class="card-subtitle mb-2 text-muted">Email: {{ user.email }}</h6>
+            <h6 class="card-subtitle mb-2 text-muted">My Location: {{ user.location }}</h6>
+            <a href="/profile/edit" class="btn btn-primary mt-2">Edit profile</a>
+            <a href="/profile/delete" class="btn btn-danger mt-2">Delete profile</a>
+        </div>
+    </div>
+    <div class="card" style="width: 18rem;">
+            <div class="card-body">
+                <h5 class="card-title">My contacts</h5>
+                <a href="/users" class="btn btn-primary">All users</a>
+            </div>
+        </div>
+</div>
+{% endblock content %}
