@@ -25,15 +25,37 @@ def index():
         return render_template("index.html")
 
 
-@app.route("/register")
-def sign():
-    session_token = request.cookies.get("session_token")
-    user = db.query(User).filter_by(session_token=session_token).first()
+@app.route("/signup")
+def reg():
+    return render_template("register.html")
 
-    if user:
-        return redirect(url_for("profile"))
+
+@app.route("/register", methods=["GET", "POST"])
+def sign():
+    name = request.form.get("name")
+    email = request.form.get("email")
+    password = request.form.get("password")
+    location = request.form.get("location")
+    hashed_password = hashlib.sha256(password.encode()).hexdigest()
+
+    user = db.query(User).filter_by(email=email).first()
+    if name and email and password and location and password:
+        if not user:
+            user = User(name=name.title(), email=email, password=hashed_password, location=location)
+            session_token = str(uuid.uuid4())
+            user.session_token = session_token
+            db.add(user)
+            db.commit()
+            response = make_response(redirect(url_for("profile")))
+            response.set_cookie("session_token", session_token)
+            return response
     else:
-        return render_template("register.html")
+        register_message = "You need to insert your name, email, password and location."
+        flash(register_message)
+        return render_template("register.html", register_message=register_message)
+
+    return redirect(url_for("index"))
+
 
 @app.route("/message")
 def message():
@@ -50,32 +72,6 @@ def message():
                                flash_message=flash_message)
     else:
         return redirect(url_for("index"))
-
-
-@app.route("/register", methods=["GET", "POST"])
-def register():
-    name = request.form.get("name")
-    email = request.form.get("email")
-    password = request.form.get("password")
-    location = request.form.get("location")
-    hashed_password = hashlib.sha256(password.encode()).hexdigest()
-
-    user = db.query(User).filter_by(email=email).first()
-    if name and email and password and location and password:
-        if not user:
-            user = User(name=name.title(), email=email, password=hashed_password, location=location)
-            session_token = str(uuid.uuid4())
-            user.session_token = session_token
-    else:
-        register_message = "You need to insert your name, email, password and location."
-        flash(register_message)
-        return render_template("register.html", register_message=register_message)
-    db.add(user)
-    db.commit()
-
-    response = make_response(redirect(url_for("profile")))
-    response.set_cookie("session_token", session_token)
-    return response
 
 
 @app.route("/login", methods=["GET", "POST"])
