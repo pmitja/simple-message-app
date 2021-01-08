@@ -16,10 +16,10 @@
     {% endfor %}
     {% endif %}
     {% endwith %}
-    <div class="card" style="width: 18rem;">
+    <div class="card special-card text-white" style="width: 18rem;">
         <div class="card-body">
             <h5 class="card-title">{{ user.name }}</h5>
-            <h6 class="card-subtitle mb-2 text-muted">Email: {{ user.email }}</h6>
+            <h6 class="card-subtitle mb-2">Email: {{ user.email }}</h6>
             <form action="/profile/edit" method="post">
                 <div class="container">
                     <div class="form-group">
