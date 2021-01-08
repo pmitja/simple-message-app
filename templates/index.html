@@ -3,7 +3,7 @@
 {% block content %}
 <div class="container">
     <h1>Welcome to message app!
-    <small class="text-muted">Please sign in or log in</small>
+    <small class="text-white">Please sign in or log in</small>
     </h1>
     {% with messages = get_flashed_messages() %}
             {% if messages %}
@@ -21,18 +21,18 @@
         <div id="login-column" class="col-md-6">
             <div id="login-box" class="col-md-12">
                 <form method="POST" action="/login">
-                    <div class="form-group">
+                    <div class="form-group text-white">
                         <label for="email">Email address:</label>
                         <input type="email" class="form-control" id="email" name="email">
                     </div>
-                    <div class="form-group">
+                    <div class="form-group text-white">
                         <label for="password">Password:</label>
                         <input type="password" class="form-control" id="password" name="password">
                     </div>
                     <button type="submit" class="btn btn-primary">Log in</button>
                     <form method="POST" action="/register">
                         <div class="text-right">
-                            <a href="/register" class="text-info">Register here</a>
+                            <a href="/register" class="btn btn-success text-white"><i class="bi bi-person-plus"></i> Register here</a>
                         </div>
                     </form>
                 </form>

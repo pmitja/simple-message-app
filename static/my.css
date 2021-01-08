@@ -1,0 +1,19 @@
+body {
+            background-image: linear-gradient(
+                331deg,
+                rgba(141, 207, 180, 0.450),
+                rgba(73, 144, 214, 0.808)),
+                url("img/bg-img.jpg");
+                background-size: cover;
+                background-position: top;
+                position: relative;
+                height: 95vh;
+            }
+
+            .special-card {
+                background: rgba(255, 252, 252, 0.1);
+            }
+
+            .ninja-color {
+                color: #20c997;
+            }

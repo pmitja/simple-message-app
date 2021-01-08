@@ -27,8 +27,13 @@ def index():
 
 @app.route("/register")
 def sign():
-    return render_template("register.html")
+    session_token = request.cookies.get("session_token")
+    user = db.query(User).filter_by(session_token=session_token).first()
 
+    if user:
+        return redirect(url_for("profile"))
+    else:
+        return render_template("register.html")
 
 @app.route("/message")
 def message():
@@ -56,11 +61,11 @@ def register():
     hashed_password = hashlib.sha256(password.encode()).hexdigest()
 
     user = db.query(User).filter_by(email=email).first()
-
-    if not user:
-        user = User(name=name.title(), email=email, password=hashed_password, location=location)
-        session_token = str(uuid.uuid4())
-        user.session_token = session_token
+    if name and email and password and location and password:
+        if not user:
+            user = User(name=name.title(), email=email, password=hashed_password, location=location)
+            session_token = str(uuid.uuid4())
+            user.session_token = session_token
     else:
         register_message = "You need to insert your name, email, password and location."
         flash(register_message)
@@ -120,18 +125,18 @@ def profile():
     session_token = request.cookies.get("session_token")
     user = db.query(User).filter_by(session_token=session_token).first()
 
-    location = user.location.title()
+    if user:
+        location = user.location.title()
 
-    r = requests.get(f"{OPEN_WEATHER_API}?q={location}&units=metric&appid={OPEN_WEATHER_API_KEY}")
+        r = requests.get(f"{OPEN_WEATHER_API}?q={location}&units=metric&appid={OPEN_WEATHER_API_KEY}")
 
-    data = r.json()
-    temperature = data["main"]["temp"]
-    weather = data["weather"][0]["main"]
+        data = r.json()
+        temperature = data["main"]["temp"]
+        weather = data["weather"][0]["main"]
 
-    if not user:
-        return redirect(url_for("index"))
-    else:
         return render_template("profile.html", user=user, location=location, temperature=temperature, weather=weather)
+    else:
+        return redirect(url_for("index"))
 
 
 @app.route("/add-message", methods=["POST", "GET"])
@@ -168,7 +173,7 @@ def all_users():
     if not user:
         return redirect(url_for("index"))
     else:
-        return render_template("users.html", users=users)
+        return render_template("users.html", user=user, users=users)
 
 
 @app.route("/profile/delete", methods=["GET", "POST"])

@@ -3,13 +3,18 @@
 {% block title %}All users{% endblock title %}
 
 {% block content %}
+{% if user %}
 <div class="container">
-    <h3>Users</h3>
-
-    <ul>
+    <h3>Users <i class="bi bi-person-lines-fill"></i></h3>
+    <small class="text-white"> All registered users: </small>
+    <ul class="list-group">
         {% for user in users %}
-        <li>{{ user.name }}, {{user.email}}</li>
+        <li class="list-group-item">{{ user.name }}, {{user.email}}
+            <a href="/message" class="btn btn-success btn-sm float-right">Send message</a>
+        </li>
+
         {% endfor %}
     </ul>
 </div>
+{% endif %}
 {% endblock content %}

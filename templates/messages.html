@@ -5,69 +5,82 @@
 {% block content %}
 <div class="container">
     <h1>My messages</h1>
-    <form method="POST" action="/add-message">
-        <div class="form-group">
-            {% with messages = get_flashed_messages() %}
-            {% if messages %}
-            {% for message in messages %}
-            <div class="alert alert-primary alert-dismissible fade show" role="alert">
-                {{ flash_message }}
-                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            {% endfor %}
-            {% endif %}
-            {% endwith %}
-            <label for="content">Your message: </label>
-            <textarea class="form-control" id="content" rows="3" name="content"></textarea>
-        </div>
-        <div>
-            <label>Choose a receiver of message please: </label>
-            <select class="custom-select" name="receiver" id="receiver">
-                {% for user in users %}
-                <option value="{{ user.id }}">{{user.name}}</option>
-                {% endfor %}
-            </select>
-        </div>
-        <div class="pt-2">
-            <button type="submit" class="btn btn-primary">Send</button>
-        </div>
-    </form>
-    <div class="pt-5">
-        <div class="card">
-            <div class="card-header">
-                <h5>My last send messages by me:</h5>
-            </div>
-            {% for message in message %}
-            <div class="card">
-                <div class="card-body">
-                    <p class="lead">
-                    <td>{{ message.content }}</td>
-                    </p>
+    <div class="row">
+        <div class="col-5">
+            <div class="card special-card text-white">
+                <div class="card-header">
+                    <form method="POST" action="/add-message">
+                        <div class="form-group">
+                            {% with messages = get_flashed_messages() %}
+                            {% if messages %}
+                            {% for message in messages %}
+                            <div class="alert alert-primary alert-dismissible fade show" role="alert">
+                                {{ flash_message }}
+                                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            {% endfor %}
+                            {% endif %}
+                            {% endwith %}
+                            <label for="content"><i class="bi bi-chat-square"></i> Your message: </label>
+                            <textarea class="form-control" id="content" rows="3" name="content"></textarea>
+                        </div>
+                        <div>
+                            <label><i class="bi bi-forward"></i> Choose a receiver of message please: </label>
+                            <select class="custom-select" name="receiver" id="receiver">
+                                {% for user in users %}
+                                <option value="{{ user.id }}">{{user.name}}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                        <div class="pt-2">
+                            <button type="submit" class="btn btn-primary"><i class="bi bi-envelope"></i> Send</button>
+                        </div>
+                    </form>
                 </div>
             </div>
-            {% endfor %}
         </div>
-    </div>
-    <div class="pt-5 pb-5">
-        <div class="card">
-            <div class="card-header">
-                <h5>My last received messages by me:</h5>
-            </div>
-            {% for message in receiver_msgs %}
-            <div class="card">
-                <div class="card-body">
-                    <p class="lead font-weight-normal">
-                    <td>{{ message.content }}</td>
-                    <div>
-                        <small class="text-muted font-italic font-weight-light blockquote-footer"> This massage was send
-                            by: {{ message.sender_name }} </small>
+        <div class="col">
+            <div class="">
+                <div class="card special-card text-white">
+                    <div class="card-header">
+                        <h5><i class="bi bi-envelope"></i> My last send messages by me:</h5>
                     </div>
-                    </p>
+                    {% for message in message %}
+                    <div class="card special-card text-white">
+                        <div class="card-body">
+                            <p class="lead">
+                            <td>{{ message.content }}</td>
+                            </p>
+                        </div>
+                    </div>
+                    {% endfor %}
                 </div>
             </div>
-            {% endfor %}
+        </div>
+        <div class="col">
+            <div class="pb-5">
+                <div class="card special-card text-white">
+                    <div class="card-header">
+                        <h5><i class="bi bi-envelope-open"></i> My last received messages by me:</h5>
+                    </div>
+                    {% for message in receiver_msgs %}
+                    <div class="card special-card text-white">
+                        <div class="card-body">
+                            <p class="lead font-weight-normal">
+                            <td>{{ message.content }}</td>
+                            <div>
+                                <small class="text-dark font-italic blockquote-footer"> This massage
+                                    was send
+                                    by: {{ message.sender_name }} </small>
+                            </div>
+                            </p>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
         </div>
     </div>
     {% endblock content %}
