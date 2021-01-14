@@ -1,9 +1,11 @@
-import requests
-from flask import Flask, render_template, request, redirect, url_for, make_response, flash
-from models import db, User, Message
 import hashlib
 import uuid
 import os
+
+import requests
+from flask import Flask, render_template, request, redirect, url_for, make_response, flash
+
+from models import db, User, Message
 
 
 app = Flask(__name__)
@@ -148,13 +150,12 @@ def messages():
         if content:
             msgs = Message(content=content, receiver_id=receiver, sender_name=user.name)
             user.messages.append(msgs)
+            db.add(user)
+            db.commit()
         else:
             flash(flash_message)
     else:
         return redirect(url_for("index"))
-
-    db.add(user)
-    db.commit()
 
     response = make_response(redirect(url_for("message", flash_message=flash_message)))
     return response
